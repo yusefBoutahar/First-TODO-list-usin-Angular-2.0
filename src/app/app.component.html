@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"
+  />
+    <title>TODO List</title>
+  </head>
+  <body>
+    <header>
+      <h1 class="animate__animated animate__bounce ">TODO List</h1>
+    </header>
+    <div class="resultado animate__animated animate__fadeInLeft ">
+      <input
+        (keyup.enter)="addToListTasks()"
+        class="taskText"
+        type="text"
+        placeholder="Introduce nueva tarea"
+        [(ngModel)]="task.title"
+      />
+      <button
+        [ngClass]="{
+          'btn btn-showTodayTaks selectFilterDate': getFilterText().includes('TODAY'),
+          'btn btn-showTodayTaks notFilterDate': !getFilterText().includes('TODAY')
+        }"
+        (click)="changeFilter()"
+      >
+        {{ getFilterText() }}
+      </button>
+      <button class="btn btn-unCompleteAllTaks" (click)="unCompleteAllTasks()">
+        Desmarcar todas
+      </button>
+      <button class="btn btn-completeAllTaks" (click)="completeAllTasks()">
+        Marcar todas
+      </button>
+      <button class="btn btn-removeAllTasks" (click)="removeAllListTasks()">
+        Eliminar todos
+      </button>
+    </div>
+    <ol class="">
+      <div class="animate__animated animate__fadeInLeft taskList" *ngFor="let tarea of getListTasks(); let i = index">
+        <input
+          (change)="isCompleted(tarea)"
+          class="checkBox"
+          type="checkBox"
+          [checked]="tarea.completed"
+        />
+        <li
+          [ngClass]="{
+            animate__animated:true, 
+            animate__fadeInLeft:true,
+            completed: tarea.completed,
+            notCompleted: !tarea.completed,
+            beforeToday: beforeToday(tarea.date)
+          }"
+        >
+          {{ tarea.title }}
+        </li>
+        <button class="btn buttonTaskList" (click)="removeToListTasks(i)">
+          Eliminar
+        </button>
+      </div>
+    </ol>
+  </body>
+</html>
